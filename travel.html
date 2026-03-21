@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Planner</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h2 style="text-align:center;">🌍 Travel Planner</h2>
+
+<div style="text-align:center; margin-top:30px;">
+<form id="tripForm">
+
+    <input type="number" id="user_id" placeholder="User ID" required><br><br>
+
+    <select id="location_id">
+        <option value="1">Mumbai</option>
+        <option value="2">Delhi</option>
+        <option value="3">Goa</option>
+    </select><br><br>
+
+    <input type="date" id="travel_date" required><br><br>
+
+    <button type="submit">Save Trip</button>
+
+</form>
+
+<p id="msg"></p>
+</div>
+
+<script>
+document.getElementById("tripForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = {
+        user_id: document.getElementById("user_id").value,
+        location_id: document.getElementById("location_id").value,
+        travel_date: document.getElementById("travel_date").value
+    };
+
+    fetch("http://localhost:3000/save-trip", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    })
+    .then(res => res.text())
+    .then(data => document.getElementById("msg").innerText = data);
+});
+</script>
+
+</body>
+</html>

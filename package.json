@@ -1,0 +1,27 @@
+{
+  "name": "weather_forcasting_pbl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivtejbhosale/Weather_Forcasting_PBL.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shivtejbhosale/Weather_Forcasting_PBL/issues"
+  },
+  "homepage": "https://github.com/shivtejbhosale/Weather_Forcasting_PBL#readme",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mysql2": "^3.20.0"
+  }
+}
