@@ -923,3 +923,77 @@
     init();
   }
 })();
+// ✅ Make function GLOBAL so button can access it
+window.saveTrip = async function () {
+
+    console.log("✅ SaveTrip clicked");
+
+    const city = document.getElementById("tripCity").value;
+    const travelDate = document.getElementById("tripDate").value; // dummy date
+
+    if (!city) {
+        alert("Please enter a city");
+        return;
+    }
+    if (!travelDate) {
+    alert("Please select a date");
+    return;
+}
+
+    try {
+        console.log("⏳ Fetching weather...");
+
+        const apiKey = "9137515afb21070e09b1b39496b30cf5";
+
+        const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+        const res = await fetch(url);
+        console.log("Response status:", res.status);
+
+        const data = await res.json();
+        console.log("Weather Data:", data);
+
+        if (!data.list || data.list.length === 0) {
+            alert("No data received");
+            return;
+        }
+
+        const forecast = data.list[0];
+        const temp = forecast.main.temp;
+
+        let advice = "Good time to travel ✅";
+
+        if (forecast.weather[0].main.includes("Rain")) {
+            advice = "Not recommended ❌ (Rain expected)";
+        } else if (temp > 35) {
+            advice = "Too hot 🔥";
+        }
+
+        // Show advice
+        const adviceEl = document.getElementById("travelAdvice");
+        if (adviceEl) {
+            adviceEl.innerText = advice;
+        }
+
+        console.log("Sending to backend...");
+
+        // Send to backend
+        await fetch("http://localhost:3000/save-trip", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user_id: 1,
+                city: city,
+                date: travelDate
+            })
+        });
+
+        alert("Trip Saved! ✅");
+
+    } catch (err) {
+        console.error("❌ Error:", err);
+        alert("Error fetching weather");
+    }
+};
