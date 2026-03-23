@@ -1,27 +1,36 @@
 {
-  "name": "weather_forcasting_pbl",
+  "name": "pbl",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "init-db": "node scripts/initDB.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shivtejbhosale/Weather_Forcasting_PBL.git"
+    "url": "git+https://github.com/Vinit1936/Weather_Forcasting_PBL.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/shivtejbhosale/Weather_Forcasting_PBL/issues"
+    "url": "https://github.com/Vinit1936/Weather_Forcasting_PBL/issues"
   },
-  "homepage": "https://github.com/shivtejbhosale/Weather_Forcasting_PBL#readme",
+  "homepage": "https://github.com/Vinit1936/Weather_Forcasting_PBL#readme",
+  "description": "",
   "dependencies": {
-    "body-parser": "^2.2.2",
+    "axios": "^1.13.6",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.20.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

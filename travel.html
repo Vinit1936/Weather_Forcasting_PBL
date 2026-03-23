@@ -1,52 +1,277 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
+
 <head>
-    <title>Travel Planner</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyPulse — Travel Planner</title>
+    <meta name="description" content="Plan trips, destinations, packing, and weather alerts in one place.">
+    <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/travel.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛅</text></svg>">
 </head>
+
 <body>
+    <div class="time-horizon"></div>
+    <div class="page-transition" id="pageTransition"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="scroll-progress" id="scrollProgress"></div>
+    <div class="theme-transition-overlay" id="themeOverlay"></div>
 
-<h2 style="text-align:center;">🌍 Travel Planner</h2>
+    <div class="animated-bg" id="animatedBg">
+        <div class="bg-gradient"></div>
+        <div class="time-ambient-glow"></div>
+        <div class="time-ambient-mesh"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="starfield" id="starfield"></div>
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+        <div class="particles" id="particles"></div>
+    </div>
 
-<div style="text-align:center; margin-top:30px;">
-<form id="tripForm">
+    <nav class="navbar dock-nav" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo dock-item">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" opacity="0.3" />
+                    <path d="M16 6C10.477 6 6 10.477 6 16s4.477 10 10 10 10-4.477 10-10" stroke="url(#logoGrad)"
+                        stroke-width="2.5" stroke-linecap="round" />
+                    <circle cx="16" cy="16" r="4" fill="currentColor" opacity="0.6" />
+                    <defs>
+                        <linearGradient id="logoGrad" x1="6" y1="6" x2="26" y2="26">
+                            <stop stop-color="#3b82f6" />
+                            <stop offset="1" stop-color="#8b5cf6" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                SkyPulse
+                <span class="logo-dot"></span>
+            </a>
 
-    <input type="number" id="user_id" placeholder="User ID" required><br><br>
+            <div class="dock-divider"></div>
 
-    <select id="location_id">
-        <option value="1">Mumbai</option>
-        <option value="2">Delhi</option>
-        <option value="3">Goa</option>
-    </select><br><br>
+            <div class="nav-links">
+                <a href="index.html" class="dock-item">Home</a>
+                <a href="about.html" class="dock-item">About</a>
+                <a href="travel.html" class="active dock-item">Travel</a>
+                <a href="login.html" class="dock-item">Login</a>
+            </div>
 
-    <input type="date" id="travel_date" required><br><br>
+            <div class="dock-divider"></div>
 
-    <button type="submit">Save Trip</button>
+            <button class="theme-toggle dock-item" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" style="opacity:0;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+            </button>
 
-</form>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-<p id="msg"></p>
-</div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="travel.html" class="active">Travel</a>
+        <a href="login.html">Login</a>
+    </div>
 
-<script>
-document.getElementById("tripForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+    <main class="page-content travel-page">
+        <section class="travel-hero">
+            <div class="container">
+                <span class="section-tag reveal">🧳 Travel Planner</span>
+                <h1 class="section-title reveal">Plan Better With <span class="text-gradient">Weather-Aware Trips</span></h1>
+                <p class="section-subtitle reveal">Create itineraries, manage destinations, build smart packing lists, and monitor severe alerts in one place.</p>
 
-    const data = {
-        user_id: document.getElementById("user_id").value,
-        location_id: document.getElementById("location_id").value,
-        travel_date: document.getElementById("travel_date").value
-    };
+                <div class="travel-toolbar reveal">
+                    <button id="refreshAllBtn" class="btn btn-secondary">Refresh</button>
+                    <button id="runAlertsBtn" class="btn btn-primary">Check Alerts</button>
+                </div>
 
-    fetch("http://localhost:3000/save-trip", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-    })
-    .then(res => res.text())
-    .then(data => document.getElementById("msg").innerText = data);
-});
-</script>
+                <div class="travel-stats-grid reveal">
+                    <article class="glass-card travel-stat">
+                        <p class="travel-stat-label">Total Destinations</p>
+                        <p class="travel-stat-value" id="totalDestinationsStat">0</p>
+                    </article>
+                    <article class="glass-card travel-stat">
+                        <p class="travel-stat-label">Packing Progress</p>
+                        <p class="travel-stat-value" id="packingProgressStat">0%</p>
+                    </article>
+                    <article class="glass-card travel-stat">
+                        <p class="travel-stat-label">Unread Alerts</p>
+                        <p class="travel-stat-value" id="unreadAlertsStat">0</p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
+        <section class="section travel-workspace">
+            <div class="container">
+                <section id="authGuard" class="glass-card auth-guard hidden">
+                    <h2>Login required</h2>
+                    <p>Travel Planner uses protected APIs. Please sign in to continue.</p>
+                    <a href="login.html" class="btn btn-primary">Go to Login</a>
+                </section>
+
+                <div id="appContent" class="travel-layout">
+                    <section class="travel-zone">
+                        <div class="travel-zone-head">
+                            <span class="section-tag">Trip Planning</span>
+                            <p>Build and manage the core plan for your journey.</p>
+                        </div>
+
+                        <div class="travel-zone-grid travel-zone-grid-planning">
+                            <aside class="glass-card travel-panel">
+                                <div class="panel-head">
+                                    <h3>Your Trips</h3>
+                                    <span id="tripCount" class="travel-badge">0</span>
+                                </div>
+
+                                <form id="createTripForm" class="travel-form">
+                                    <input id="tripName" type="text" placeholder="Trip name" required>
+                                    <textarea id="tripDescription" placeholder="Description (optional)"></textarea>
+                                    <div class="travel-row-2">
+                                        <label>Start<input id="tripStartDate" type="date" required></label>
+                                        <label>End<input id="tripEndDate" type="date" required></label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Create Trip</button>
+                                </form>
+
+                                <div id="tripList" class="travel-list"></div>
+                            </aside>
+
+                            <div class="glass-card travel-panel">
+                                <div class="panel-head">
+                                    <h3>Trip Details</h3>
+                                    <span id="selectedTripStatus" class="travel-status">No trip selected</span>
+                                </div>
+
+                                <div id="tripMeta" class="trip-meta empty">Select a trip to manage destinations and packing.</div>
+
+                                <div id="tripActions" class="panel-actions hidden">
+                                    <select id="tripStatusSelect">
+                                        <option value="planned">Planned</option>
+                                        <option value="ongoing">Ongoing</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                    <button id="updateTripStatusBtn" class="btn btn-secondary">Update Status</button>
+                                    <button id="deleteTripBtn" class="btn btn-danger">Delete Trip</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="travel-zone">
+                        <div class="travel-zone-head">
+                            <span class="section-tag">Destinations</span>
+                            <p>Add places and coordinate travel dates for each stop.</p>
+                        </div>
+
+                        <div class="travel-zone-grid travel-zone-grid-single">
+                            <div class="glass-card travel-panel">
+                                <div class="panel-head">
+                                    <h3>Destinations</h3>
+                                    <span id="destinationCount" class="travel-badge">0</span>
+                                </div>
+
+                                <form id="addDestinationForm" class="travel-form disabled-form">
+                                    <div class="travel-row-2">
+                                        <input id="destinationCity" type="text" placeholder="City" required>
+                                        <input id="destinationCountryCode" type="text" placeholder="Country code (e.g. IN)">
+                                    </div>
+                                    <div class="destination-autofill-row">
+                                        <button type="button" id="autoFillLocationBtn" class="btn btn-secondary">Auto Fill Location</button>
+                                        <span id="autoFillLocationHint" class="destination-autofill-hint">Use city name to fill country code, latitude, and longitude.</span>
+                                    </div>
+                                    <div class="travel-row-2">
+                                        <input id="destinationLat" type="number" step="any" placeholder="Latitude" required>
+                                        <input id="destinationLon" type="number" step="any" placeholder="Longitude" required>
+                                    </div>
+                                    <div class="travel-row-2">
+                                        <label>Arrival<input id="destinationArrival" type="date"></label>
+                                        <label>Departure<input id="destinationDeparture" type="date"></label>
+                                    </div>
+                                    <textarea id="destinationNotes" placeholder="Notes (optional)"></textarea>
+                                    <button type="submit" class="btn btn-primary">Add Destination</button>
+                                </form>
+
+                                <div id="destinationList" class="travel-list"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="travel-zone">
+                        <div class="travel-zone-head">
+                            <span class="section-tag">Packing & Alerts</span>
+                            <p>Track essentials and monitor severe weather for your destinations.</p>
+                        </div>
+
+                        <div class="travel-zone-grid travel-zone-grid-prep">
+                            <div class="glass-card travel-panel">
+                                <div class="panel-head">
+                                    <h3>Packing List</h3>
+                                    <button id="suggestPackingBtn" class="travel-chip">Auto Suggest</button>
+                                </div>
+                                <form id="addPackingForm" class="travel-packing disabled-form">
+                                    <input id="packingItemName" type="text" placeholder="Add item" required>
+                                    <select id="packingCategory">
+                                        <option value="other">Other</option>
+                                        <option value="clothing">Clothing</option>
+                                        <option value="documents">Documents</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="toiletries">Toiletries</option>
+                                        <option value="medicine">Medicine</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-secondary">Add</button>
+                                </form>
+                                <div id="packingList" class="travel-list"></div>
+                            </div>
+
+                            <div class="glass-card travel-panel">
+                                <div class="panel-head">
+                                    <h3>Weather Alerts</h3>
+                                    <span id="alertCount" class="travel-badge">0</span>
+                                </div>
+                                <div id="alertsList" class="travel-list"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="toastRack" class="toast-rack" aria-live="polite"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/travel-ui.js"></script>
 </body>
+
 </html>

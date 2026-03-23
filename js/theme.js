@@ -11,9 +11,42 @@
   const html = document.documentElement;
   const themeToggle = document.getElementById("themeToggle");
   const overlay = document.getElementById("themeOverlay");
-  const ttCircle = document.getElementById("ttCircle");
-  const ttFlash = document.getElementById("ttFlash");
   let transitioning = false;
+
+  function ensureTransitionElements() {
+    if (!overlay) return null;
+
+    let ttCircle = document.getElementById("ttCircle");
+    if (!ttCircle) {
+      ttCircle = document.createElement("div");
+      ttCircle.id = "ttCircle";
+      ttCircle.className = "tt-circle";
+      overlay.appendChild(ttCircle);
+    }
+
+    let ttFlash = document.getElementById("ttFlash");
+    if (!ttFlash) {
+      ttFlash = document.createElement("div");
+      ttFlash.id = "ttFlash";
+      ttFlash.className = "tt-flash";
+      overlay.appendChild(ttFlash);
+    }
+
+    const requiredRingClasses = ["tt-ring-1", "tt-ring-2", "tt-ring-3"];
+    requiredRingClasses.forEach((ringClass) => {
+      if (!overlay.querySelector(`.${ringClass}`)) {
+        const ring = document.createElement("div");
+        ring.className = `tt-ring ${ringClass}`;
+        overlay.appendChild(ring);
+      }
+    });
+
+    return {
+      ttCircle,
+      ttFlash,
+      rings: overlay.querySelectorAll(".tt-ring"),
+    };
+  }
 
   // ---------- Initialize Theme ----------
   function initTheme() {
@@ -46,6 +79,22 @@
 
   // ---------- THE BIG ANIMATED TRANSITION ----------
   function animateThemeTransition(theme) {
+    if (!themeToggle || !overlay) {
+      html.setAttribute("data-theme", theme);
+      updateToggleIcons(theme);
+      transitioning = false;
+      return;
+    }
+
+    const transitionEls = ensureTransitionElements();
+    if (!transitionEls) {
+      html.setAttribute("data-theme", theme);
+      updateToggleIcons(theme);
+      transitioning = false;
+      return;
+    }
+
+    const { ttCircle, rings } = transitionEls;
     transitioning = true;
 
     const isDark = theme === "dark";
@@ -76,7 +125,6 @@
     themeToggle.style.transform = "rotate(360deg) scale(1.2)";
 
     // -- Position rings at click origin --
-    const rings = overlay.querySelectorAll(".tt-ring");
     rings.forEach((ring) => {
       ring.style.left = cx + "px";
       ring.style.top = cy + "px";
@@ -125,8 +173,12 @@
 
   // ---------- Update Toggle Icons ----------
   function updateToggleIcons(theme) {
+    if (!themeToggle) return;
+
     const sunIcon = themeToggle.querySelector(".sun-icon");
     const moonIcon = themeToggle.querySelector(".moon-icon");
+
+    if (!sunIcon || !moonIcon) return;
 
     if (theme === "dark") {
       sunIcon.style.opacity = "0";
