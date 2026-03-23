@@ -108,3 +108,49 @@ See `.env.example` for all required values.
 - Get trip details and weather snapshots
 - Auto-suggest packing items
 - Check weather alerts
+
+## Deploy on Render
+
+This repository includes a Render Blueprint file: `render.yaml`.
+
+### Option A: Deploy with Blueprint (recommended)
+
+1. Push this repo to GitHub.
+2. In Render dashboard: New -> Blueprint.
+3. Select this repository.
+4. Render will detect `render.yaml` and create the `skypulse-app` service.
+5. Set the required secret env vars when prompted:
+
+- `DB_HOST`
+- `DB_PORT` (usually `3306`)
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_NAME`
+- `JWT_SECRET`
+- `WEATHER_API_KEY`
+
+### Option B: Manual Web Service setup
+
+If you do not use Blueprint, create a Web Service with:
+
+- Environment: Node
+- Build Command: `npm ci`
+- Start Command: `npm start`
+
+Then add the same environment variables listed above.
+
+### Database schema on Render
+
+After env vars are set and service is up, run schema initialization once:
+
+```bash
+npm run init-db
+```
+
+You can run this from Render Shell or locally against the production DB credentials.
+
+### Notes
+
+- App serves both frontend and backend from the same Express service.
+- Ensure your MySQL instance allows inbound connections from Render.
+- If the service fails on startup, verify DB credentials first because startup checks DB connectivity.
