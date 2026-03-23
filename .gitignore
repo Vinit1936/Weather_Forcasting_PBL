@@ -11,17 +11,19 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-*.log
 
-# OS/editor files
+# Build / coverage
+dist/
+build/
+coverage/
+
+# Runtime files
+*.pid
+*.seed
+*.pid.lock
+
+# OS / editor
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
-
-# Build/cache
-coverage/
-dist/
-build/
-.tmp/
-tmp/
